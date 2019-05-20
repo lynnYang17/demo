@@ -3,16 +3,22 @@ class Job{//To find a new job, Fighting!
 	public static void main(String[] args){
 		Job mJob = new Job();
 		/* ---------- 1. find the first target in a int[] ------------- */
-		int[] input = {2,3,4,5,5,5,6,7,8,9,10};
+		int[] input1 = {2,3,4,5,5,5,6,7,8,9,10};
 		//int[] input = {};
 		int target = 5;
-		int ret1 = mJob.binarySearch(input, target);
+		int ret1 = mJob.binarySearch(input1, target);
 		System.out.println("index of first target: " + ret1);
 
 		/* ---------- 2. matches "{[()]}()[]{}" ------------- */
-		String str = "{[()]}()[]{{}}";
-		boolean ret2 =  mJob.matchesString(str);
+		String input2 = "{[()]}()[]{{}}";
+		boolean ret2 =  mJob.matchesString(input2);
 		System.out.println("isMatch: " + ret2);
+
+		/* ---------- 3. calculate -----------*/
+		String input3 = "1+2*3/2+4-1";
+		System.out.println(input3);
+		float ret3 = mJob.calculate(input3);
+		System.out.println("calculate result: " + input3 + " = " + ret3);
 	}
 	//1. find the first target in a int[] by Binary_Search
 	public int binarySearch(int[] input, int target){//2, 3, 4, 5, 5, 5, 6, 7, 8, 9, 10
@@ -83,4 +89,58 @@ class Job{//To find a new job, Fighting!
 		}
 		return ret;
 	}
+	//3. calculation
+	public float calculate(String s){// 1+2*3/4+5*6+7/1-6+9
+		//1. 使用栈，计算一个包含有+ - * /的计算式
+		//2. 将第一个数字Push到栈中
+		//3. 遇到+, 则将后边的数字push到栈中
+		//4. 遇到-, 则将后边的数字值为相反数, push到栈中
+		//5. 遇到*, 则将后边的数字和栈顶数字做乘法, push到栈中
+		//6. 遇到/, 则将后边的数字和栈顶数字做除法, push到栈中
+		String subStr = null;
+		Stack<Float> st = new Stack<Float>();
+		for(int i = 0; i < s.length(); ){//遍历字符串
+			subStr = s.substring(i, i + 1);
+			if(st.empty()){//将第一个数字push到栈中
+				st.push(Float.parseFloat(subStr));
+				//System.out.println("peek: " + Float.parseFloat(subStr));
+				i += 1;
+			}else if(subStr.equals("+")){// 加号，将后边的数字push到栈中
+				//System.out.println("after +: " + Float.parseFloat(s.substring(i + 1, i + 2)));
+				st.push(Float.parseFloat(s.substring(i + 1, i + 2)));
+				//System.out.println("peek: " + Float.parseFloat(s.substring(i + 1, i + 2)));
+				i += 2;
+			}else if(subStr.equals("-")){//将后边的数字值为相反数, push到栈中
+				float minus = (-1) * Float.parseFloat(s.substring(i + 1, i + 2));
+				//System.out.println("minus: " + minus);
+				st.push(minus);
+				//System.out.println("peek: " + minus);
+				i += 2;
+			}else if(subStr.equals("*")){//将后边的数字和栈顶数字做乘法, push到栈中
+				float multiply = st.pop() * Float.parseFloat(s.substring(i + 1, i + 2));
+				//System.out.println("after *: " + Float.parseFloat(s.substring(i + 1, i + 2)));
+				//System.out.println("multiply: " + multiply);
+				st.push(multiply);
+				//System.out.println("peek: " + multiply);
+				i += 2;
+			} else if(subStr.equals("/")){//将后边的数字和栈顶数字做除法, push到栈中
+				float divide = st.pop() / Float.parseFloat(s.substring(i + 1, i + 2));
+				//System.out.println("after /: " + Float.parseFloat(s.substring(i + 1, i + 2)));
+				//System.out.println("divide: " + divide);
+				st.push(divide);
+				//System.out.println("peek: " + divide);
+				i += 2;
+			} else{
+				System.out.println("Input string error");
+			}
+		}
+		float ret = 0;
+		int initSize = st.size();
+		for(int j = 0; j < initSize; j++){
+			System.out.println("st peek: " + st.peek());
+			ret +=st.pop();
+		}
+		return ret;
+	}
+	//
 }
