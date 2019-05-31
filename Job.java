@@ -5,8 +5,8 @@ class Job{//To find a new job, Fighting!
 		/* ---------- 1. find the first target in a int[] ------------- */
 		int[] input1 = {2,3,4,5,5,5,6,7,8,9,10};
 		//int[] input = {};
-		int target = 5;
-		int ret1 = mJob.binarySearch(input1, target);
+		int target1 = 5;
+		int ret1 = mJob.binarySearch(input1, target1);
 		System.out.println("index of first target: " + ret1);
 
 		/* ---------- 2. matches "{[()]}()[]{}" ------------- */
@@ -37,6 +37,12 @@ class Job{//To find a new job, Fighting!
 			System.out.print(input5[i] + " ");
 		}
 		System.out.println();
+		/*--------- return indices of the two numbers ---------*/
+		int[] input6 = {7, 2, 11, 15};
+		int target6 = 18;
+		System.out.println("return indices of the two numbers");
+		int[] ret6 = mJob.twoSum(input6, target6);
+		System.out.println("index of two value: [" + ret6[0] + ", " + ret6[1] + "]");
 	}
 	//1. find the first target in a int[] by Binary_Search
 	public int binarySearch(int[] input, int target){//2, 3, 4, 5, 5, 5, 6, 7, 8, 9, 10
@@ -208,5 +214,21 @@ class Job{//To find a new job, Fighting!
 		}
 		return input;
 	}
-
+	//return indices of the two numbers
+	public int[] twoSum(int[] nums, int target) {
+        //input: [2, 7, 11, 15] target: 9
+        //output: [0, 1]
+        //时间复杂度：O(n²)  空间复杂度：O(1)
+        int[] res = {-1, -1};
+        for(int i = 0; i < nums.length; i++){
+        	for(int j = i + 1; j < nums.length; j++){
+        		int sum = nums[i] + nums[j];
+        		if(sum == target){
+        			res[0] = i;
+        			res[1] = j;
+        		}
+        	}
+        }
+        return res;
+    }
 }
